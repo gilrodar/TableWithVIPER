@@ -12,11 +12,16 @@ import UIKit
 protocol HomeViewProtocol: class {
     // PRESENTER -> VIEW
     var presenter: HomePresenterProtocol? { get set }
+    
+    func presenterPushDataView(receivedData: [Category.DatoURL])
+    func startActivityIndicatorView()
+    func stopActivityIndicatorView()
 }
 
 protocol HomeWireFrameProtocol: class {
     // PRESENTER -> WIREFRAME
     static func createHomeModule() -> UIViewController
+    func presentDetailView(from view: HomeViewProtocol, with data: Category.DatoURL)
 }
 
 protocol HomePresenterProtocol: class {
@@ -26,10 +31,12 @@ protocol HomePresenterProtocol: class {
     var wireFrame: HomeWireFrameProtocol? { get set }
     
     func viewDidLoad()
+    func showDetailView(with data: Category.DatoURL)
 }
 
 protocol HomeInteractorOutputProtocol: class {
-// INTERACTOR -> PRESENTER
+    // INTERACTOR -> PRESENTER
+    func interactorPushDataPresenter(receivedData: [Category.DatoURL])
 }
 
 protocol HomeInteractorInputProtocol: class {
@@ -37,6 +44,8 @@ protocol HomeInteractorInputProtocol: class {
     var presenter: HomeInteractorOutputProtocol? { get set }
     var localDatamanager: HomeLocalDataManagerInputProtocol? { get set }
     var remoteDatamanager: HomeRemoteDataManagerInputProtocol? { get set }
+    
+    func interactorGetData()
 }
 
 protocol HomeDataManagerInputProtocol: class {
@@ -46,10 +55,13 @@ protocol HomeDataManagerInputProtocol: class {
 protocol HomeRemoteDataManagerInputProtocol: class {
     // INTERACTOR -> REMOTEDATAMANAGER
     var remoteRequestHandler: HomeRemoteDataManagerOutputProtocol? { get set }
+    
+    func externalGetData()
 }
 
 protocol HomeRemoteDataManagerOutputProtocol: class {
     // REMOTEDATAMANAGER -> INTERACTOR
+    func remoteDataManagerCallBackData(with categories: [Category])
 }
 
 protocol HomeLocalDataManagerInputProtocol: class {
